@@ -31,7 +31,7 @@ class Sequence(object):
     def suffix_array(self):
         if not getattr(self, '_suffix_array', None):
             suffix_array = malloc(len(self.seq), c_int)
-            status = SAIS.sais(c_char_p(self.seq), suffix_array, len(self.seq))
+            status = SAIS.sais(c_char_p(self.seq.encode('utf-8')), suffix_array, len(self.seq))
             if status:
                 raise Exception("Error code %s encountered while constructing suffix array", status)
             self._suffix_array = suffix_array
@@ -41,7 +41,7 @@ class Sequence(object):
     def lcp_array(self):
         if not getattr(self, '_lcp_array', None):
             lcp_array = malloc(len(self), c_int)
-            status = SAIS.compute_lcp(c_char_p(self.seq),
+            status = SAIS.compute_lcp(c_char_p(self.seq.encode('utf-8')),
                                       self.suffix_array,
                                       lcp_array,
                                       len(self))
